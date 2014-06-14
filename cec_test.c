@@ -268,13 +268,15 @@ int main(void)
     if (ctx.fd < 0)
         die("error: open");
 
-    /**
-     * Register the device
-     */
-    if (ioctl(ctx.fd, CEC_REGISTER_DEVICE, &ctx.dev) < 0)
-        die("error: ioctl CEC_REGISTER_DEVICE");
+    if (ioctl(ctx.fd, CEC_GET_PHY_ADDR, &ctx.dev.phy_addr) < 0) {
+        /**
+         * Register the device
+         */
+        if (ioctl(ctx.fd, CEC_REGISTER_DEVICE, &ctx.dev) < 0)
+            die("error: ioctl CEC_REGISTER_DEVICE");
 
-    printf("HDMI device registered\n");
+        printf("HDMI CEC device registered\n");
+    }
 
     /**
      * Register the device
